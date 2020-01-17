@@ -1,11 +1,54 @@
 // PlantillaGraficos.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#define GlFW_STATIC
+
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+
 #include <iostream>
+
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    //declarar una ventana
+    GLFWwindow* window;
+
+    //si no se pudo iniciar GLFW terminamos ejecucion
+    if (glfwInit()){
+        exit(EXIT_FAILURE);
+    }
+    //si se pudo iniciar GLFW iniciamos la ventana
+    window = glfwCreateWindow(800, 600, "Ventana", NULL, NULL);
+
+    //si no se pudo crear la ventana, terminamos la ejecucion
+    if (!window) {
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    //establecemos la ventana como contexto
+    glfwMakeContextCurrent(window);
+    //ciclo de dibujo (Draw Loop)
+    while (!glfwWindowShouldClose(window)) {
+        //establecer region de dibujo
+        glViewport(0, 0, 800, 600);
+        //establecemos el color de borrado
+        //valores RGBA
+        glClearColor(0.5, 1, 0.2, 1);
+        //borrar!
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        //actualizar valores y dibujar
+        glfwSwapBuffers(window);
+    }
+    //despues del ciclo de dibujo eliminemos la venta y procesos de glfw
+    glfwDestroyWindow(window);
+    glfwTerminate();
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
