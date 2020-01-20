@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define GlFW_STATIC
+#define GLEW_STATIC
 
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
@@ -19,7 +19,7 @@ int main()
     GLFWwindow* window;
 
     //si no se pudo iniciar GLFW terminamos ejecucion
-    if (glfwInit()){
+    if (!glfwInit()){
         exit(EXIT_FAILURE);
     }
     //si se pudo iniciar GLFW iniciamos la ventana
@@ -33,13 +33,25 @@ int main()
 
     //establecemos la ventana como contexto
     glfwMakeContextCurrent(window);
+
+    //una vez establecido el contexto se activan las funciiones moderna (gpu)
+    glewExperimental = true;
+
+    GLenum errores = glewInit();
+    if (errores != GLEW_OK) {
+        glewGetErrorString(errores);
+    }
+
+    const GLubyte* versionGL = glGetString(GL_VERSION);
+    cout << "Version OpenGL: " << versionGL;
+
     //ciclo de dibujo (Draw Loop)
     while (!glfwWindowShouldClose(window)) {
         //establecer region de dibujo
         glViewport(0, 0, 800, 600);
         //establecemos el color de borrado
         //valores RGBA
-        glClearColor(0.5, 1, 0.2, 1);
+        glClearColor(1, 0.8, 0, 1);
         //borrar!
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
